@@ -6,14 +6,11 @@ export default function App() {
         <View style={styles.container}>
             <View style={{ flexDirection: 'row', }}>
                 <View style={styles.divider} />
-                <Text style={styles.title}>Todo <Text style={{ fontWeight: "300", color: Colors.blue }}>Lists
+                <Text style={styles.title}>Todo<Text style={{ fontWeight: "300", color: Colors.blue }}>Lists
       </Text>
-
+                    <View style={styles.divider} />
                 </Text>
-                <View style={styles.divider} />
-            </View>
-            <View style={{ marginVertical: 48 }}>
-                
+
             </View>
         </View>
     );

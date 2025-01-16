@@ -12,9 +12,6 @@ export default function App() {
                 </Text>
                 <View style={styles.divider} />
             </View>
-            <View style={{ marginVertical: 48 }}>
-                
-            </View>
         </View>
     );
 }
@@ -29,7 +26,7 @@ const styles = StyleSheet.create({
     },
     divider: {
         backgroundColor: Colors.lightBlue,
-        height: 1,
+        height: 2,
         flex: 1,
         alignSelf: 'center',
     },

@@ -12,9 +12,6 @@ export default function App() {
                 </Text>
                 <View style={styles.divider} />
             </View>
-            <View style={{ marginVertical: 48 }}>
-                
-            </View>
         </View>
     );
 }
