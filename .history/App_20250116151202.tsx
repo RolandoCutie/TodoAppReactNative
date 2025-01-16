@@ -1,7 +1,6 @@
 
 import { AntDesign } from '@expo/vector-icons';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import TodoList from './components/TodoList';
 import { Colors } from './constants/colors';
 import tempData from './tempData';
 
@@ -26,7 +25,7 @@ export default function App() {
             </View>
 
             <View style={{ height: 275, paddingLeft: 32 }}>
-                <FlatList data={tempData} keyExtractor={item => item.name} horizontal={true} showsHorizontalScrollIndicator={false} renderItem={({ item }) => TodoList({ list: item })} />
+                <FlatList data={tempData} keyExtractor={item => item.name} horizontal=  showsHorizontalScrollIndicator={false} renderItem={({ item }) => <View><Text>{item.name}</Text></View>} />
             </View>
         </View>
     );
