@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "TodoApp",
-    "slug": "TodoApp",
+    "slug": "todoproject",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,7 +22,15 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
-    }
-  }
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6b34dc13-72b4-4880-aaba-72e0421ac356"
+      }
+    },
+    "sdkVersion": "52.0.0"
+  },
+  "name": "todoapp"
 }
