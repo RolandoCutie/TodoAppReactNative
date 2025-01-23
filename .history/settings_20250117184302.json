@@ -1,0 +1,7 @@
+{
+    "react-native": {
+        "packager": {
+            "port": 190021 //packagerPort from packager-info.json
+        }
+    }
+}

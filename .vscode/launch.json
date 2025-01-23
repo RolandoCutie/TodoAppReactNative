@@ -2,35 +2,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Start Expo",
-            "type": "node-terminal",
-            "request": "launch",
-            "command": "npx expo start",
-            "cwd": "${workspaceFolder}",
-            "env": {}
-        },
-        {
-            "name": "Start Expo on iOS Simulator",
-            "type": "node-terminal",
-            "command": "expo start --ios",
-            "request": "launch",
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "name": "Debug in Expo",
-            "type": "chrome",
-            "request": "launch",
-            "url": "http://localhost:19001",
-            "webRoot": "${workspaceFolder}"
-        },
-        {
-            "name": "Attach to packager1",
-            "program": "$(workspaceRoot)/.vscode/launchReactNative.js",
+            "name": "Attatch to packager3",
             "type": "reactnative",
             "request": "attach",
-            "sourceMaps": true,
+            "port": 8081,
             "cwd": "${workspaceFolder}"
-        },
-       
+        }
     ]
 }

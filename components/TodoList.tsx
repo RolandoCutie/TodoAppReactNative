@@ -20,7 +20,7 @@ interface Todo {
 
 export default function TodoList({ list }: { list: List }) {
     const completedTodos = list.todos.filter(todo => todo.completed).length
-    const remainigTodos = list.todos.filter(todo => todo.completed == false).length
+    const remainigTodos = list.todos.filter(todo => !todo.completed).length
 
     debugger
     return (
