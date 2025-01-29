@@ -86,7 +86,7 @@ class Fire {
                     const listData = child.val();
                     if (listData && typeof listData === 'object') {
                         lists.push({
-                            id: listData.id,
+                            id: parseInt(child.key!) || Date.now(),
                             name: listData.name || "",
                             color: listData.color || "#000000",
                             todos: listData.todos || []
@@ -112,20 +112,14 @@ class Fire {
         }
 
         const listsRef = ref(database, `users/${this.userId}/lists`);
-        const newListRef = push(listsRef); // Firebase generates a unique key
-
-        const newList = {
-            id: newListRef.key, // Use the Firebase-generated key
-            name: list.name,
-            color: list.color,
-            todos: list.todos || []
-        };
+        const newListRef = push(listsRef);
+       
 
         console.log("Adding list to Firebase:", newList);
         await set(newListRef, newList);
         console.log("List added successfully with key:", newListRef.key);
 
-        return newListRef.key; // Return the correct ID
+        return newListRef.key;
     }
 
     async updateList(list: List) {

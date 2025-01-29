@@ -86,7 +86,7 @@ class Fire {
                     const listData = child.val();
                     if (listData && typeof listData === 'object') {
                         lists.push({
-                            id: listData.id,
+                            id: parseInt(child.key!) || Date.now(),
                             name: listData.name || "",
                             color: listData.color || "#000000",
                             todos: listData.todos || []
@@ -115,7 +115,6 @@ class Fire {
         const newListRef = push(listsRef); // Firebase generates a unique key
 
         const newList = {
-            id: newListRef.key, // Use the Firebase-generated key
             name: list.name,
             color: list.color,
             todos: list.todos || []

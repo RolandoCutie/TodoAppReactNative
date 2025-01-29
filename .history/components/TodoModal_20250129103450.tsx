@@ -9,8 +9,7 @@ type TodoListModalProps = {
     closeModal: () => void; // Función para cerrar el modal
     updateList: (list: any) => void; // Función para cerrar el modal
 
-    list: {
-        id: number;        // Propiedades de la lista
+    list: {                // Propiedades de la lista
         name: string;
         color: string;
         todos: {

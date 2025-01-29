@@ -6,7 +6,7 @@ import TodoListModal from './TodoModal';
 // Define the type for the list item that will be passed to the TodoList function
 export interface List {
     name: string;
-    id:number;
+    id:string;
     color: string;
     todos: Todo[];
 }

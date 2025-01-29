@@ -3,7 +3,6 @@ import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, Vi
 
 import { AntDesign } from '@expo/vector-icons';
 import { Colors } from '../constants/colors';
-import { List } from './TodoList';
 
 
 
@@ -34,8 +33,8 @@ export const AddListModal: React.FC<AddListModalProps> = ({ closeModal,addList})
             return;
         }
 
-        const list = {
-           //id: Date.now(), // Genera un ID único
+        const list: = {
+            id: Date.now(), // Genera un ID único
             name: text,
             color: colorbackground,
             todos: []

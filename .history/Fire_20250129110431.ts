@@ -86,7 +86,7 @@ class Fire {
                     const listData = child.val();
                     if (listData && typeof listData === 'object') {
                         lists.push({
-                            id: listData.id,
+                            id: list,
                             name: listData.name || "",
                             color: listData.color || "#000000",
                             todos: listData.todos || []

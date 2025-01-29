@@ -1,8 +1,8 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { initializeApp } from "firebase/app";
-import { getAuth, signInAnonymously } from "firebase/auth";
-import { get, getDatabase, onValue, push, ref, set, update } from "firebase/database";
+import { getAuth, onAuthStateChanged, signInAnonymously } from "firebase/auth";
+import { getDatabase, ref, onValue, set, push, update, get } from "firebase/database";
 import { List } from "./components/TodoList";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const firebaseConfig = {
     apiKey: "AIzaSyDbBXljuynzoH18RdviEpyRndOFamPls3g",
@@ -86,7 +86,7 @@ class Fire {
                     const listData = child.val();
                     if (listData && typeof listData === 'object') {
                         lists.push({
-                            id: listData.id,
+                            id: parseInt(child.key!) || Date.now(),
                             name: listData.name || "",
                             color: listData.color || "#000000",
                             todos: listData.todos || []
@@ -112,10 +112,9 @@ class Fire {
         }
 
         const listsRef = ref(database, `users/${this.userId}/lists`);
-        const newListRef = push(listsRef); // Firebase generates a unique key
-
+        const newListRef = push(listsRef);
         const newList = {
-            id: newListRef.key, // Use the Firebase-generated key
+            id:list.id,
             name: list.name,
             color: list.color,
             todos: list.todos || []
@@ -125,17 +124,12 @@ class Fire {
         await set(newListRef, newList);
         console.log("List added successfully with key:", newListRef.key);
 
-        return newListRef.key; // Return the correct ID
+        return newListRef.key;
     }
 
     async updateList(list: List) {
         if (!this.userId) {
             console.log("No user ID available");
-            return;
-        }
-
-        if (!list.id) {
-            console.error("Error: list.id is missing!");
             return;
         }
 

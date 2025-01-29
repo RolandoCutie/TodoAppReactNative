@@ -86,7 +86,7 @@ class Fire {
                     const listData = child.val();
                     if (listData && typeof listData === 'object') {
                         lists.push({
-                            id: listData.id,
+                            //id: parseInt(child.key!) || Date.now(),
                             name: listData.name || "",
                             color: listData.color || "#000000",
                             todos: listData.todos || []
@@ -134,10 +134,7 @@ class Fire {
             return;
         }
 
-        if (!list.id) {
-            console.error("Error: list.id is missing!");
-            return;
-        }
+      
 
         const listRef = ref(database, `users/${this.userId}/lists/${list.id}`);
         const updateData = {

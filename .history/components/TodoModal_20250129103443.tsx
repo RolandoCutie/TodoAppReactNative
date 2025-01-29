@@ -9,12 +9,11 @@ type TodoListModalProps = {
     closeModal: () => void; // Función para cerrar el modal
     updateList: (list: any) => void; // Función para cerrar el modal
 
-    list: {
-        id: number;        // Propiedades de la lista
+    list: {                // Propiedades de la lista
         name: string;
         color: string;
         todos: {
-            id: string;
+            id:string;
             name: string;
             completed: boolean;
         }[]
@@ -92,15 +91,15 @@ export default class TodoListModal extends React.Component<TodoListModalProps> {
 
                     <View style={[styles.section, { flex: 3 }]}>
 
-                        <FlatList
-                            data={list.todos}
-                            renderItem={({ item, index }) => this.renderTodo(item, index)}
-                            keyExtractor={(item) => item.id} // Use a unique key
-                            contentContainerStyle={{ paddingHorizontal: 32, paddingVertical: 64 }}
-                            showsVerticalScrollIndicator={false}
-                        />
+                    <FlatList
+    data={list.todos}
+    renderItem={({ item, index }) => this.renderTodo(item, index)}
+    keyExtractor={(item) => item.id} // Use a unique key
+    contentContainerStyle={{ paddingHorizontal: 32, paddingVertical: 64 }}
+    showsVerticalScrollIndicator={false}
+/>
 
-
+                      
                     </View>
 
                     <View style={[styles.section, styles.footer]} >

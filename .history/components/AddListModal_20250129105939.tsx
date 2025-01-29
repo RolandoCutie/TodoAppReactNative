@@ -34,7 +34,7 @@ export const AddListModal: React.FC<AddListModalProps> = ({ closeModal,addList})
             return;
         }
 
-        const list = {
+        const list:List = {
            //id: Date.now(), // Genera un ID único
             name: text,
             color: colorbackground,

@@ -6,7 +6,7 @@ import TodoListModal from './TodoModal';
 // Define the type for the list item that will be passed to the TodoList function
 export interface List {
     name: string;
-    id:number;
+    //id:number;
     color: string;
     todos: Todo[];
 }
@@ -46,7 +46,7 @@ export default class TodoList extends React.Component<{ list: List, updateList: 
                     <TodoListModal
                         closeModal={this.toggleAddTodoModal}
                         updateList={updateList}
-                        list={{ id:list.id,  name: list.name, color: list.color, todos: list.todos }}
+                        list={{   name: list.name, color: list.color, todos: list.todos }}
                     />
                 </Modal>
 

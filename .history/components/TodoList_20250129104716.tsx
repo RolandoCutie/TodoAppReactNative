@@ -46,7 +46,7 @@ export default class TodoList extends React.Component<{ list: List, updateList: 
                     <TodoListModal
                         closeModal={this.toggleAddTodoModal}
                         updateList={updateList}
-                        list={{ id:list.id,  name: list.name, color: list.color, todos: list.todos }}
+                        list={{ id:name: list.name, color: list.color, todos: list.todos }}
                     />
                 </Modal>
 
