@@ -2,8 +2,6 @@ import React from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../constants/colors';
 import TodoListModal from './TodoModal';
-import { List } from '../Domain/listModel';
-
 
 
 
@@ -11,7 +9,11 @@ import { List } from '../Domain/listModel';
 // Define the type for the list item that will be passed to the TodoList function
 
 
-
+export interface Todo {
+    id:string;
+    name: string;
+    completed: boolean;
+}
 
 export default class TodoList extends React.Component<{ list: List, updateList: (list: any) => void; }> {
     state = {

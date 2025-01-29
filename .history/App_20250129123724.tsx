@@ -2,13 +2,9 @@ import { AntDesign } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { AddListModal } from './components/AddListModal';
-import TodoList  from './components/TodoList';
+import TodoList, { List } from './components/TodoList';
 import { Colors } from './constants/colors';
 import { fireInstance } from './Data/Remote/Fire';
-import { List } from './Domain/listModel';
-
-
-
 
 export default function App() {
     const [modalVisible, setModalVisible] = useState(false);

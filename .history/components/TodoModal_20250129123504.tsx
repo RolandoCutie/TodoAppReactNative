@@ -38,7 +38,7 @@ export default class TodoListModal extends React.Component<TodoListModalProps> {
     }
 
 
-    //Metodo que se encarga primero de adiccionar un nuevo todo a la lista,le genera un id unico a ese todo q es la fecha en q se adicciono y luego lo a;ade a la lista de ese todo, entonces luego se encarga de actualizar el todo con la nueva lista llamando al metodo q se le pasa desde App.tsx para que el se encarge de mandarlo para firebase
+    //Metodo que se encarga primero de adiccionar un nuevo todo a la lista,le genera un id unico a ese todo q es la fecha en q se adicciono y luego lo a;ade a la lista de ese todo, entonces luego se encarga de actualizar el todo con la nueva lista llamando al 
     addElemntToTodoList = () => {
         const { newTodo } = this.state;
         if (!newTodo.trim()) return;

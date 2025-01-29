@@ -2,16 +2,23 @@ import React from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../constants/colors';
 import TodoListModal from './TodoModal';
-import { List } from '../Domain/listModel';
 
 
 
-
-//Este componente es el encargado de renderizar lo todos que estan creados mostrandolos en el homePage si le damos encima nos muestra el modal TodoModal el cual es el que nos muestra el listado de TodosQue tiene la lista y no permite addicionar nuevos todos o cambiarles el estado a los q ya estan
+//Este componente es el encargado de renderizar lo todos que estan creados mostrandolos en el homePage si le damos encima no
 // Define the type for the list item that will be passed to the TodoList function
+export interface List {
+    name: string;
+    id:number;
+    color: string;
+    todos: Todo[];
+}
 
-
-
+export interface Todo {
+    id:string;
+    name: string;
+    completed: boolean;
+}
 
 export default class TodoList extends React.Component<{ list: List, updateList: (list: any) => void; }> {
     state = {

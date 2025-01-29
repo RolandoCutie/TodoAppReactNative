@@ -5,10 +5,6 @@ import { AddListModal } from './components/AddListModal';
 import TodoList  from './components/TodoList';
 import { Colors } from './constants/colors';
 import { fireInstance } from './Data/Remote/Fire';
-import { List } from './Domain/listModel';
-
-
-
 
 export default function App() {
     const [modalVisible, setModalVisible] = useState(false);

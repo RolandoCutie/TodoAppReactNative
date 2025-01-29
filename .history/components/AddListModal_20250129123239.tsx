@@ -3,7 +3,7 @@ import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, Vi
 
 import { AntDesign } from '@expo/vector-icons';
 import { Colors } from '../constants/colors';
-
+import { List } from './TodoList';
 
 
 
@@ -16,7 +16,7 @@ type AddListModalProps = {
 
 
 
-//Se crea un widgetel cual es el que muesstra el modal para crear un nuevo todo que se le puede pasar una funcion que en este caso es llamada closeModal que se encarga de cerrar el modal
+//Se crea un widgetel cual es el que que se le puede pasar una funcion que en este caso es llamada closeModal que se encarga de cerrar el modal
 export const AddListModal: React.FC<AddListModalProps> = ({ closeModal,addList}) => {
     const backgroundColors = ["#24A6D9", "#A7CBD9", "#A7DDD9", ""]
 

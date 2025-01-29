@@ -3,7 +3,7 @@ import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, Vi
 
 import { AntDesign } from '@expo/vector-icons';
 import { Colors } from '../constants/colors';
-
+import { List } from './TodoList';
 
 
 

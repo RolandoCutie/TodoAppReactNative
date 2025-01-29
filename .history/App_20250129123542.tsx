@@ -1,14 +1,11 @@
 import { AntDesign } from '@expo/vector-icons';
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { FlatList, Modal, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import { AddListModal } from './components/AddListModal';
-import TodoList  from './components/TodoList';
+import TodoList, { List } from './components/TodoList';
 import { Colors } from './constants/colors';
-import { fireInstance } from './Data/Remote/Fire';
-import { List } from './Domain/listModel';
-
-
-
+import Fire, { fireInstance } from './Fire';
+import { get } from 'firebase/database';
 
 export default function App() {
     const [modalVisible, setModalVisible] = useState(false);
@@ -48,26 +45,26 @@ export default function App() {
         setModalVisible(!modalVisible);
     };
 
-    /**
-     * Renders a TodoList component for a given list.
-     * @param {List} list - The list object containing the todos to be displayed.
-     */
+/**
+ * Renders a TodoList component for a given list.
+ * @param {List} list - The list object containing the todos to be displayed.
+ */
 
     const renderList = (list: List) => {
         return <TodoList list={list} updateList={updateList} />
     }
 
 
-    /**
-     * Adds a new list to the Firebase database.
-     *
-     * @param {List} newElement - The list object to be added, containing its name, color, and todos.
-     *
-     * This function attempts to add a new list to the database by calling the addList method
-     * from the Fire instance. On success, the list is added to the Firebase database, and the
-     * Firebase listener will automatically update the state with the new list.
-     * Logs any errors that occur during the process.
-     */
+/**
+ * Adds a new list to the Firebase database.
+ *
+ * @param {List} newElement - The list object to be added, containing its name, color, and todos.
+ *
+ * This function attempts to add a new list to the database by calling the addList method
+ * from the Fire instance. On success, the list is added to the Firebase database, and the
+ * Firebase listener will automatically update the state with the new list.
+ * Logs any errors that occur during the process.
+ */
 
     const addList = async (newElement: List) => {
         try {
@@ -79,16 +76,16 @@ export default function App() {
         }
     };
 
-    /**
-     * Updates an existing list in the Firebase database.
-     *
-     * @param {List} updatedList - The updated list object to be saved, containing its name, color, and todos.
-     *
-     * This function attempts to update an existing list in the database by calling the updateList method
-     * from the Fire instance. On success, the list is updated in the Firebase database, and the
-     * Firebase listener will automatically update the state with the updated list.
-     * Logs any errors that occur during the process.
-     */
+/**
+ * Updates an existing list in the Firebase database.
+ *
+ * @param {List} updatedList - The updated list object to be saved, containing its name, color, and todos.
+ *
+ * This function attempts to update an existing list in the database by calling the updateList method
+ * from the Fire instance. On success, the list is updated in the Firebase database, and the
+ * Firebase listener will automatically update the state with the updated list.
+ * Logs any errors that occur during the process.
+ */
     const updateList = async (updatedList: List) => {
         try {
             console.log("Updating list:", updatedList);

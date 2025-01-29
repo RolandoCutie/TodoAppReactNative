@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { initializeApp } from "firebase/app";
 import { getAuth, signInAnonymously } from "firebase/auth";
 import { get, getDatabase, onValue, push, ref, set, update } from "firebase/database";
-import { List } from "./components/TodoList";
+import { List } from './Domain/listModel';
 
 const firebaseConfig = {
     apiKey: "AIzaSyDbBXljuynzoH18RdviEpyRndOFamPls3g",
@@ -24,6 +24,15 @@ const USER_ID_KEY = '@todo_app_user_id';
 class Fire {
     userId: string | null = null;
 
+
+    /**
+     * Initializes the Firebase app by authenticating an anonymous user.
+     * If the user already has a stored user ID, it will be used. Otherwise, a new anonymous user will be created.
+     * The user ID is stored in AsyncStorage under the key '@todo_app_user_id'.
+     * If the user does not exist in the Firebase Realtime Database, a new entry will be created.
+     * If the user already exists, the lastAccess field will be updated.
+     * @returns {Promise<void>} A promise that resolves when the initialization is complete.
+     */
     async init() {
         console.log("Starting Firebase initialization...");
 
@@ -69,6 +78,12 @@ class Fire {
 
     getLists(callback: (lists: List[]) => void) {
         if (!this.userId) {
+            /**
+             * Retrieves the lists for the current user from Firebase Realtime Database.
+             * If the user ID is not available, an empty array will be returned.
+             * @param {function(List[]):void} callback A callback function that will be called with the lists as an argument.
+             * @returns {void}
+             */
             console.log("No user ID available yet");
             callback([]);
             return;
