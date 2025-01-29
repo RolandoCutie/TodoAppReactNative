@@ -23,7 +23,7 @@
       "package": "com.rcutie.todoproject"
     },
     "web": {
-      "favicon": "./assets/icon.png",
+      "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
     "extra": {

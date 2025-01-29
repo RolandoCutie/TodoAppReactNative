@@ -37,17 +37,10 @@ export default class TodoListModal extends React.Component<TodoListModalProps> {
         this.props.updateList(list);
     }
 
-    deleteTodo = (index: number) => {
+    deleteTodo=(index:number)=>{
         let list = this.props.list;
-        list.todos.splice(index, 1);
+        list.todos.splice(index,1);
         this.props.updateList(list);
-    }
-
-    updateListTodoName = (name: string) => {
-        let list = this.props.list;
-        list.name = name;
-        this.props.updateList(list);
-
     }
 
 
@@ -71,19 +64,53 @@ export default class TodoListModal extends React.Component<TodoListModalProps> {
     //This will be the method that will render the list
     renderTodo = (todo: { name: string; completed: boolean }, index: number) => {
         return (
-            <View style={styles.todoContainer}>
+            const renderRightActions = (progress, dragX) => {
+                return (
+                  <View style={{ justifyContent: "center" }}>
+                    <TouchableOpacity
+                      onPress={() => this.deleteTodo(index)}
+                      style={{
+                        backgroundColor: Colors.red,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: 80,
+                        height: "100%",
+                        borderRadius: 8,
+                      }}
+                    >
+                      <AntDesign name="delete" size={24} color="white" />
+                    </TouchableOpacity>
+                  </View>
+                );
+              };
 
-                <TouchableOpacity onPress={() => this.toggleTodoCompleted(index)}>
-                    <Ionicons name={todo.completed ? "checkbox" : "square-outline"} size={24} color={Colors.gray} style={{ marginRight: 12, width: 32 }} />
-                </TouchableOpacity>
-                <Text style={[styles.todo, { textDecorationLine: todo.completed ? "line-through" : "none", color: todo.completed ? Colors.gray : Colors.black, flex: 1 }]}>{todo.name}</Text>
+              return (
+                <Swipeable renderRightActions={renderRightActions}>
+                  <View style={styles.todoContainer}>
+                    <TouchableOpacity onPress={() => this.toggleTodoCompleted(index)}>
+                      <Ionicons
+                        name={todo.completed ? "checkbox" : "square-outline"}
+                        size={24}
+                        color={Colors.gray}
+                        style={{ marginRight: 12, width: 32 }}
+                      />
+                    </TouchableOpacity>
 
-                <TouchableOpacity style={{ paddingLeft: 134 }} onPress={() => this.deleteTodo(index)}>
-                    <AntDesign name="delete" size={24} color={Colors.red} />
-                </TouchableOpacity>
-
-            </View>
-
+                    <Text
+                      style={[
+                        styles.todo,
+                        {
+                          flex: 1,
+                          textDecorationLine: todo.completed ? "line-through" : "none",
+                          color: todo.completed ? Colors.gray : Colors.black,
+                        },
+                      ]}
+                    >
+                      {todo.name}
+                    </Text>
+                  </View>
+                </Swipeable>
+              );
         );
     }
 
@@ -103,10 +130,10 @@ export default class TodoListModal extends React.Component<TodoListModalProps> {
                     <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
                         <AntDesign name="close" size={24} color={Colors.black} />
                     </TouchableOpacity>
-                    
                     <View style={[styles.section, styles.header, { borderBottomColor: list.color }]}>
-                        <TextInput style={styles.title} value={list.name} onChangeText={this.updateListTodoName} placeholder='Name of the list' />
+                        <Text style={styles.title}>{list.name}</Text>
                         <Text style={styles.taskCount}>{completedTodos} of {taskCount} task</Text>
+
                     </View>
 
                     <View style={[styles.section, { flex: 3 }]}>

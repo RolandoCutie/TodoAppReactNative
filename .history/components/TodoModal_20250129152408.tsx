@@ -37,18 +37,7 @@ export default class TodoListModal extends React.Component<TodoListModalProps> {
         this.props.updateList(list);
     }
 
-    deleteTodo = (index: number) => {
-        let list = this.props.list;
-        list.todos.splice(index, 1);
-        this.props.updateList(list);
-    }
-
-    updateListTodoName = (name: string) => {
-        let list = this.props.list;
-        list.name = name;
-        this.props.updateList(list);
-
-    }
+    deleteTodo=()
 
 
     //Metodo que se encarga primero de adiccionar un nuevo todo a la lista,le genera un id unico a ese todo q es la fecha en q se adicciono y luego lo a;ade a la lista de ese todo, entonces luego se encarga de actualizar el todo con la nueva lista llamando al metodo q se le pasa desde App.tsx para que el se encarge de mandarlo para firebase
@@ -72,15 +61,10 @@ export default class TodoListModal extends React.Component<TodoListModalProps> {
     renderTodo = (todo: { name: string; completed: boolean }, index: number) => {
         return (
             <View style={styles.todoContainer}>
-
                 <TouchableOpacity onPress={() => this.toggleTodoCompleted(index)}>
                     <Ionicons name={todo.completed ? "checkbox" : "square-outline"} size={24} color={Colors.gray} style={{ marginRight: 12, width: 32 }} />
                 </TouchableOpacity>
-                <Text style={[styles.todo, { textDecorationLine: todo.completed ? "line-through" : "none", color: todo.completed ? Colors.gray : Colors.black, flex: 1 }]}>{todo.name}</Text>
-
-                <TouchableOpacity style={{ paddingLeft: 134 }} onPress={() => this.deleteTodo(index)}>
-                    <AntDesign name="delete" size={24} color={Colors.red} />
-                </TouchableOpacity>
+                <Text style={[styles.todo, { textDecorationLine: todo.completed ? "line-through" : "none", color: todo.completed ? Colors.gray : Colors.black }]}>{todo.name}</Text>
 
             </View>
 
@@ -103,10 +87,10 @@ export default class TodoListModal extends React.Component<TodoListModalProps> {
                     <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
                         <AntDesign name="close" size={24} color={Colors.black} />
                     </TouchableOpacity>
-                    
                     <View style={[styles.section, styles.header, { borderBottomColor: list.color }]}>
-                        <TextInput style={styles.title} value={list.name} onChangeText={this.updateListTodoName} placeholder='Name of the list' />
+                        <Text style={styles.title}>{list.name}</Text>
                         <Text style={styles.taskCount}>{completedTodos} of {taskCount} task</Text>
+
                     </View>
 
                     <View style={[styles.section, { flex: 3 }]}>

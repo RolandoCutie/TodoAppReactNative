@@ -140,7 +140,7 @@ export default function App() {
         <View style={styles.container}>
             <Modal visible={modalVisible} animationType="slide">
                 <View style={styles.modalContent}>
-                    <AddListModal closeModal={() => toggleAddTodoModal()} addList={addList} />
+                    <AddListModal closeModal={() => toggleAddTodoModal()} addList={(newElement)} />
                 </View>
             </Modal>
 
@@ -165,7 +165,7 @@ export default function App() {
                     keyExtractor={(item) => item.id.toString()}
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    renderItem={({ item }) => <TodoList list={item} updateList={updateList} />}
+                    renderItem={({ item }) => <TodoList list={item} updateList={(updatedList) => fireInstance.updateList(updatedList)} />}
                     keyboardShouldPersistTaps="always"
                 />
             </View>

@@ -44,9 +44,11 @@ export default class TodoListModal extends React.Component<TodoListModalProps> {
     }
 
     updateListTodoName = (name: string) => {
-        let list = this.props.list;
-        list.name = name;
-        this.props.updateList(list);
+        if()
+
+            let list = this.props.list;
+            list.name = name;
+            this.props.updateList(list);
 
     }
 
@@ -103,10 +105,11 @@ export default class TodoListModal extends React.Component<TodoListModalProps> {
                     <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
                         <AntDesign name="close" size={24} color={Colors.black} />
                     </TouchableOpacity>
-                    
                     <View style={[styles.section, styles.header, { borderBottomColor: list.color }]}>
-                        <TextInput style={styles.title} value={list.name} onChangeText={this.updateListTodoName} placeholder='Name of the list' />
+                        <TextInput style={styles.title} value={list.name} onChangeText={this.updateListTodoName} />
+
                         <Text style={styles.taskCount}>{completedTodos} of {taskCount} task</Text>
+
                     </View>
 
                     <View style={[styles.section, { flex: 3 }]}>

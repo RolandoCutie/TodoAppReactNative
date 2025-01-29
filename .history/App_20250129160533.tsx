@@ -20,63 +20,6 @@ export default function App() {
     const opacityAnim = useState(new Animated.Value(1))[0];
     const translateYAnim = useState(new Animated.Value(0))[0];
 
-
-    /**
-    * Toggles the visibility of the add todo modal.
-    */
-    const toggleAddTodoModal = () => {
-        setModalVisible(!modalVisible);
-    };
-
-    /**
-     * Renders a TodoList component for a given list.
-     * @param {List} list - The list object containing the todos to be displayed.
-     */
-
-
-
-
-    /**
-     * Adds a new list to the Firebase database.
-     *
-     * @param {List} newElement - The list object to be added, containing its name, color, and todos.
-     *
-     * This function attempts to add a new list to the database by calling the addList method
-     * from the Fire instance. On success, the list is added to the Firebase database, and the
-     * Firebase listener will automatically update the state with the new list.
-     * Logs any errors that occur during the process.
-     */
-
-    const addList = async (newElement: List) => {
-        try {
-            console.log("Adding new list:", newElement);
-            await fireInstance.addList(newElement);
-            // The list will be automatically updated through the Firebase listener
-        } catch (error) {
-            console.error("Error adding list:", error);
-        }
-    };
-
-    /**
-     * Updates an existing list in the Firebase database.
-     *
-     * @param {List} updatedList - The updated list object to be saved, containing its name, color, and todos.
-     *
-     * This function attempts to update an existing list in the database by calling the updateList method
-     * from the Fire instance. On success, the list is updated in the Firebase database, and the
-     * Firebase listener will automatically update the state with the updated list.
-     * Logs any errors that occur during the process.
-     */
-    const updateList = async (updatedList: List) => {
-        try {
-            console.log("Updating list:", updatedList);
-            await fireInstance.updateList(updatedList);
-            // The list will be automatically updated through the Firebase listener
-        } catch (error) {
-            console.error("Error updating list:", error);
-        }
-    }
-
     useEffect(() => {
         const initializeFirebase = async () => {
             try {
@@ -140,7 +83,7 @@ export default function App() {
         <View style={styles.container}>
             <Modal visible={modalVisible} animationType="slide">
                 <View style={styles.modalContent}>
-                    <AddListModal closeModal={() => toggleAddTodoModal()} addList={addList} />
+                    <AddListModal closeModal={() => setModalVisible(false)} addList={(newElement) => fireInstance.addList(newElement)} />
                 </View>
             </Modal>
 
@@ -153,7 +96,7 @@ export default function App() {
             </View>
 
             <View style={{ marginVertical: 48 }}>
-                <TouchableOpacity style={styles.addList} onPress={() => toggleAddTodoModal()}>
+                <TouchableOpacity style={styles.addList} onPress={() => setModalVisible(true)}>
                     <AntDesign name="plus" size={16} color={Colors.blue} />
                 </TouchableOpacity>
                 <Text style={styles.add}>Add List</Text>
@@ -165,7 +108,7 @@ export default function App() {
                     keyExtractor={(item) => item.id.toString()}
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    renderItem={({ item }) => <TodoList list={item} updateList={updateList} />}
+                    renderItem={({ item }) => <TodoList list={item} updateList={(updatedList) => fireInstance.updateList(updatedList)} />}
                     keyboardShouldPersistTaps="always"
                 />
             </View>

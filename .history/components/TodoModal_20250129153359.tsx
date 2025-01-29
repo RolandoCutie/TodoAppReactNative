@@ -43,12 +43,7 @@ export default class TodoListModal extends React.Component<TodoListModalProps> {
         this.props.updateList(list);
     }
 
-    updateListTodoName = (name: string) => {
-        let list = this.props.list;
-        list.name = name;
-        this.props.updateList(list);
-
-    }
+    update
 
 
     //Metodo que se encarga primero de adiccionar un nuevo todo a la lista,le genera un id unico a ese todo q es la fecha en q se adicciono y luego lo a;ade a la lista de ese todo, entonces luego se encarga de actualizar el todo con la nueva lista llamando al metodo q se le pasa desde App.tsx para que el se encarge de mandarlo para firebase
@@ -103,10 +98,10 @@ export default class TodoListModal extends React.Component<TodoListModalProps> {
                     <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
                         <AntDesign name="close" size={24} color={Colors.black} />
                     </TouchableOpacity>
-                    
                     <View style={[styles.section, styles.header, { borderBottomColor: list.color }]}>
-                        <TextInput style={styles.title} value={list.name} onChangeText={this.updateListTodoName} placeholder='Name of the list' />
+                        <Text style={styles.title}>{list.name}</Text>
                         <Text style={styles.taskCount}>{completedTodos} of {taskCount} task</Text>
+
                     </View>
 
                     <View style={[styles.section, { flex: 3 }]}>

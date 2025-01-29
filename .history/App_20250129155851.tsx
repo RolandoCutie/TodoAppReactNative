@@ -1,7 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
-import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect, useState } from 'react';
-import { Animated, FlatList, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Animated, FlatList, Modal, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import * as SplashScreen from 'expo-splash-screen';
 import { AddListModal } from './components/AddListModal';
 import TodoList from './components/TodoList';
 import { Colors } from './constants/colors';
@@ -13,18 +13,43 @@ SplashScreen.preventAutoHideAsync();
 export default function App() {
     const [modalVisible, setModalVisible] = useState(false);
     const [lists, setList] = useState<List[]>([]);
+    const [loading, setLoading] = useState(true);
     const [appReady, setAppReady] = useState(false);
+    const scaleAnim = new Animated.Value(1);
 
-    // Animaciones
-    const scaleAnim = useState(new Animated.Value(1))[0];
-    const opacityAnim = useState(new Animated.Value(1))[0];
-    const translateYAnim = useState(new Animated.Value(0))[0];
+    useEffect(() => {
+        const initializeFirebase = async () => {
+            try {
+                console.log("Initializing Firebase...");
+                await fireInstance.init();
+                console.log("Firebase initialized, setting up lists listener...");
 
+                fireInstance.getLists((newLists) => {
+                    console.log("Received lists from Firebase:", newLists);
+                    setList(newLists);
+                    setLoading(false);
+                });
+            } catch (error) {
+                console.error("Failed to initialize Firebase:", error);
+                setLoading(false);
+            }
+        };
 
-    /**
-    * Toggles the visibility of the add todo modal.
-    */
-    const toggleAddTodoModal = () => {
+        const prepareApp = async () => {
+            await initializeFirebase();
+            setTimeout(() => {
+                setAppReady(true);
+                SplashScreen.hideAsync();
+            }, 2000);
+        };
+
+        prepareApp();
+    }, []);
+
+     /**
+     * Toggles the visibility of the add todo modal.
+     */
+     const toggleAddTodoModal = () => {
         setModalVisible(!modalVisible);
     };
 
@@ -33,7 +58,7 @@ export default function App() {
      * @param {List} list - The list object containing the todos to be displayed.
      */
 
-
+  
 
 
     /**
@@ -78,59 +103,21 @@ export default function App() {
     }
 
     useEffect(() => {
-        const initializeFirebase = async () => {
-            try {
-                console.log("Initializing Firebase...");
-                await fireInstance.init();
-                console.log("Firebase initialized, setting up lists listener...");
-
-                fireInstance.getLists((newLists) => {
-                    console.log("Received lists from Firebase:", newLists);
-                    setList(newLists);
-                });
-            } catch (error) {
-                console.error("Failed to initialize Firebase:", error);
-            }
-        };
-
-        const prepareApp = async () => {
-            await initializeFirebase();
-            setTimeout(() => {
-                Animated.parallel([
-                    Animated.timing(scaleAnim, {
-                        toValue: 4,
-                        duration: 1000,
-                        useNativeDriver: true,
-                    }),
-                    Animated.timing(opacityAnim, {
-                        toValue: 0,
-                        duration: 1000,
-                        useNativeDriver: true,
-                    }),
-                    Animated.timing(translateYAnim, {
-                        toValue: -200,
-                        duration: 1000,
-                        useNativeDriver: true,
-                    }),
-                ]).start(() => {
-                    setAppReady(true);
-                    SplashScreen.hideAsync();
-                });
-            }, 1000);
-        };
-
-        prepareApp();
-    }, []);
+        if (appReady) {
+            Animated.timing(scaleAnim, {
+                toValue: 50,
+                duration: 600,
+                useNativeDriver: true,
+            }).start();
+        }
+    }, [appReady]);
 
     if (!appReady) {
         return (
             <View style={styles.splashContainer}>
                 <Animated.Image
                     source={require("./assets/icon.png")}
-                    style={[
-                        styles.splashImage,
-                        { transform: [{ scale: scaleAnim }, { translateY: translateYAnim }], opacity: opacityAnim }
-                    ]}
+                    style={[styles.splashImage, { transform: [{ scale: scaleAnim }] }]}
                 />
             </View>
         );
@@ -138,9 +125,9 @@ export default function App() {
 
     return (
         <View style={styles.container}>
-            <Modal visible={modalVisible} animationType="slide">
+            <Modal visible={modalVisible} animationType="slide" >
                 <View style={styles.modalContent}>
-                    <AddListModal closeModal={() => toggleAddTodoModal()} addList={addList} />
+                    <AddListModal closeModal={toggleAddTodoModal} addList={addList} />
                 </View>
             </Modal>
 
@@ -153,7 +140,7 @@ export default function App() {
             </View>
 
             <View style={{ marginVertical: 48 }}>
-                <TouchableOpacity style={styles.addList} onPress={() => toggleAddTodoModal()}>
+                <TouchableOpacity style={styles.addList} onPress={toggleAddTodoModal}>
                     <AntDesign name="plus" size={16} color={Colors.blue} />
                 </TouchableOpacity>
                 <Text style={styles.add}>Add List</Text>
@@ -163,7 +150,7 @@ export default function App() {
                 <FlatList
                     data={lists}
                     keyExtractor={(item) => item.id.toString()}
-                    horizontal
+                    horizontal={true}
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item }) => <TodoList list={item} updateList={updateList} />}
                     keyboardShouldPersistTaps="always"
@@ -182,4 +169,6 @@ const styles = StyleSheet.create({
     addList: { borderWidth: 2, borderColor: Colors.lightBlue, borderRadius: 4, padding: 16, alignItems: 'center', justifyContent: 'center' },
     add: { color: Colors.blue, fontWeight: '800', fontSize: 14, marginTop: 8 },
     modalContent: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: Colors.white },
+    closeModalButton: { marginTop: 20, padding: 10, backgroundColor: Colors.blue, borderRadius: 5 },
+    closeModalText: { color: '#fff', fontWeight: 'bold' },
 });

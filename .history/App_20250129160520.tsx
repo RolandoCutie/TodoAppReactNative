@@ -13,69 +13,9 @@ SplashScreen.preventAutoHideAsync();
 export default function App() {
     const [modalVisible, setModalVisible] = useState(false);
     const [lists, setList] = useState<List[]>([]);
+    const [loading, setLoading] = useState(true);
     const [appReady, setAppReady] = useState(false);
-
-    // Animaciones
-    const scaleAnim = useState(new Animated.Value(1))[0];
-    const opacityAnim = useState(new Animated.Value(1))[0];
-    const translateYAnim = useState(new Animated.Value(0))[0];
-
-
-    /**
-    * Toggles the visibility of the add todo modal.
-    */
-    const toggleAddTodoModal = () => {
-        setModalVisible(!modalVisible);
-    };
-
-    /**
-     * Renders a TodoList component for a given list.
-     * @param {List} list - The list object containing the todos to be displayed.
-     */
-
-
-
-
-    /**
-     * Adds a new list to the Firebase database.
-     *
-     * @param {List} newElement - The list object to be added, containing its name, color, and todos.
-     *
-     * This function attempts to add a new list to the database by calling the addList method
-     * from the Fire instance. On success, the list is added to the Firebase database, and the
-     * Firebase listener will automatically update the state with the new list.
-     * Logs any errors that occur during the process.
-     */
-
-    const addList = async (newElement: List) => {
-        try {
-            console.log("Adding new list:", newElement);
-            await fireInstance.addList(newElement);
-            // The list will be automatically updated through the Firebase listener
-        } catch (error) {
-            console.error("Error adding list:", error);
-        }
-    };
-
-    /**
-     * Updates an existing list in the Firebase database.
-     *
-     * @param {List} updatedList - The updated list object to be saved, containing its name, color, and todos.
-     *
-     * This function attempts to update an existing list in the database by calling the updateList method
-     * from the Fire instance. On success, the list is updated in the Firebase database, and the
-     * Firebase listener will automatically update the state with the updated list.
-     * Logs any errors that occur during the process.
-     */
-    const updateList = async (updatedList: List) => {
-        try {
-            console.log("Updating list:", updatedList);
-            await fireInstance.updateList(updatedList);
-            // The list will be automatically updated through the Firebase listener
-        } catch (error) {
-            console.error("Error updating list:", error);
-        }
-    }
+    const scaleAnim = new Animated.Value(1);
 
     useEffect(() => {
         const initializeFirebase = async () => {
@@ -87,50 +27,43 @@ export default function App() {
                 fireInstance.getLists((newLists) => {
                     console.log("Received lists from Firebase:", newLists);
                     setList(newLists);
+                    setLoading(false);
                 });
             } catch (error) {
                 console.error("Failed to initialize Firebase:", error);
+                setLoading(false);
             }
         };
 
         const prepareApp = async () => {
             await initializeFirebase();
             setTimeout(() => {
-                Animated.parallel([
-                    Animated.timing(scaleAnim, {
-                        toValue: 4,
-                        duration: 1000,
-                        useNativeDriver: true,
-                    }),
-                    Animated.timing(opacityAnim, {
-                        toValue: 0,
-                        duration: 1000,
-                        useNativeDriver: true,
-                    }),
-                    Animated.timing(translateYAnim, {
-                        toValue: -200,
-                        duration: 1000,
-                        useNativeDriver: true,
-                    }),
-                ]).start(() => {
-                    setAppReady(true);
-                    SplashScreen.hideAsync();
-                });
+                setAppReady(true);
+                SplashScreen.hideAsync();
             }, 1000);
         };
 
         prepareApp();
     }, []);
 
+    
+
+    useEffect(() => {
+        if (appReady) {
+            Animated.timing(scaleAnim, {
+                toValue: 50,
+                duration: 9600,
+                useNativeDriver: true,
+            }).start();
+        }
+    }, [appReady]);
+
     if (!appReady) {
         return (
             <View style={styles.splashContainer}>
                 <Animated.Image
                     source={require("./assets/icon.png")}
-                    style={[
-                        styles.splashImage,
-                        { transform: [{ scale: scaleAnim }, { translateY: translateYAnim }], opacity: opacityAnim }
-                    ]}
+                    style={[styles.splashImage, { transform: [{ scale: scaleAnim }] }]}
                 />
             </View>
         );
@@ -138,9 +71,9 @@ export default function App() {
 
     return (
         <View style={styles.container}>
-            <Modal visible={modalVisible} animationType="slide">
+            <Modal visible={modalVisible} animationType="slide" >
                 <View style={styles.modalContent}>
-                    <AddListModal closeModal={() => toggleAddTodoModal()} addList={addList} />
+                    <AddListModal closeModal={toggleAddTodoModal} addList={addList} />
                 </View>
             </Modal>
 
@@ -153,7 +86,7 @@ export default function App() {
             </View>
 
             <View style={{ marginVertical: 48 }}>
-                <TouchableOpacity style={styles.addList} onPress={() => toggleAddTodoModal()}>
+                <TouchableOpacity style={styles.addList} onPress={toggleAddTodoModal}>
                     <AntDesign name="plus" size={16} color={Colors.blue} />
                 </TouchableOpacity>
                 <Text style={styles.add}>Add List</Text>
@@ -163,7 +96,7 @@ export default function App() {
                 <FlatList
                     data={lists}
                     keyExtractor={(item) => item.id.toString()}
-                    horizontal
+                    horizontal={true}
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item }) => <TodoList list={item} updateList={updateList} />}
                     keyboardShouldPersistTaps="always"
@@ -182,4 +115,6 @@ const styles = StyleSheet.create({
     addList: { borderWidth: 2, borderColor: Colors.lightBlue, borderRadius: 4, padding: 16, alignItems: 'center', justifyContent: 'center' },
     add: { color: Colors.blue, fontWeight: '800', fontSize: 14, marginTop: 8 },
     modalContent: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: Colors.white },
+    closeModalButton: { marginTop: 20, padding: 10, backgroundColor: Colors.blue, borderRadius: 5 },
+    closeModalText: { color: '#fff', fontWeight: 'bold' },
 });

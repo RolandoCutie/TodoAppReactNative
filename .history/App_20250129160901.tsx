@@ -165,7 +165,7 @@ export default function App() {
                     keyExtractor={(item) => item.id.toString()}
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    renderItem={({ item }) => <TodoList list={item} updateList={updateList} />}
+                    renderItem={({ item }) => <TodoList list={item} updateList={U} />}
                     keyboardShouldPersistTaps="always"
                 />
             </View>
