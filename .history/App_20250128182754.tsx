@@ -1,75 +1,44 @@
 import { AntDesign } from '@expo/vector-icons';
-import React, { useState, useEffect } from 'react';
-import { FlatList, Modal, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
+import React, { useState } from 'react';
+import { FlatList, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { AddListModal } from './components/AddListModal';
 import TodoList, { List } from './components/TodoList';
 import { Colors } from './constants/colors';
-import Fire, { fireInstance } from './Fire';
-import { get } from 'firebase/database';
+import tempData from './tempData';
+import Fire from './Fire';
 
 export default function App() {
     const [modalVisible, setModalVisible] = useState(false);
-    const [lists, setList] = useState<List[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [lists, setList] = useState(tempData);
 
-    useEffect(() => {
-        const initializeFirebase = async () => {
-            try {
-                console.log("Initializing Firebase...");
-                await fireInstance.init();
-                console.log("Firebase initialized, setting up lists listener...");
-
-                // Load lists from Firebase
-                fireInstance.getLists((newLists) => {
-                    console.log("Received lists from Firebase:", newLists);
-                    setList(newLists);
-                    setLoading(false);
-                });
-            } catch (error) {
-                console.error("Failed to initialize Firebase:", error);
-                setLoading(false);
-            }
-        };
-
-        initializeFirebase();
-    }, []);
 
     const toggleAddTodoModal = () => {
         setModalVisible(!modalVisible);
     };
 
-    const renderList = (list: List) => {
+    //This are the elemnts that will be rendered in the list on the home page
+    const renderList = (list: any) => {
         return <TodoList list={list} updateList={updateList} />
     }
 
-    const addList = async (newElement: List) => {
-        try {
-            console.log("Adding new list:", newElement);
-            await fireInstance.addList(newElement);
-            // The list will be automatically updated through the Firebase listener
-        } catch (error) {
-            console.error("Error adding list:", error);
-        }
+
+
+    const addList = (newElement: List) => {
+        setList([...lists, newElement]); // Solo agrega el elemento recibido
     };
 
-    const updateList = async (updatedList: List) => {
-        try {
-            console.log("Updating list:", updatedList);
-            await fireInstance.updateList(updatedList);
-            // The list will be automatically updated through the Firebase listener
-        } catch (error) {
-            console.error("Error updating list:", error);
-        }
+    //Metodo que se encarga de actualizar la lista
+    const updateList = (updatedList: List) => {
+        setList(lists.map(item => {
+            return item.id === updatedList.id ? updatedList : item;
+        }));
     }
 
-    if (loading) {
-        return (
-            <View style={[styles.container, styles.centerContent]}>
-                <ActivityIndicator size="large" color={Colors.blue} />
-            </View>
-        );
     }
 
+ 
+
+    debugger;
     return (
         <View style={styles.container}>
             <Modal visible={modalVisible} animationType="slide" >
@@ -101,7 +70,6 @@ export default function App() {
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item }) => renderList(item)}
                     keyboardShouldPersistTaps="always"
-
                 />
             </View>
         </View>
@@ -114,10 +82,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    centerContent: {
-        justifyContent: 'center',
-        alignItems: 'center',
     },
     divider: {
         backgroundColor: Colors.lightBlue,

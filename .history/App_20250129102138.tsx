@@ -5,7 +5,6 @@ import { AddListModal } from './components/AddListModal';
 import TodoList, { List } from './components/TodoList';
 import { Colors } from './constants/colors';
 import Fire, { fireInstance } from './Fire';
-import { get } from 'firebase/database';
 
 export default function App() {
     const [modalVisible, setModalVisible] = useState(false);
@@ -20,7 +19,7 @@ export default function App() {
                 console.log("Firebase initialized, setting up lists listener...");
 
                 // Load lists from Firebase
-                fireInstance.getLists((newLists) => {
+                fireInstance.getLists((lists) => {
                     console.log("Received lists from Firebase:", newLists);
                     setList(newLists);
                     setLoading(false);

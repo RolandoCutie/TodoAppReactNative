@@ -20,7 +20,7 @@ export default function App() {
                 console.log("Firebase initialized, setting up lists listener...");
 
                 // Load lists from Firebase
-                fireInstance.getLists((newLists) => {
+                fireInstance.get((lists) => {
                     console.log("Received lists from Firebase:", newLists);
                     setList(newLists);
                     setLoading(false);
